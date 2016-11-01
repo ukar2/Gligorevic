@@ -1,21 +1,40 @@
 package model;
 
 public class Node {
-	private String letter = "";
-	private Float weight = 0.0f;
+	private String letter;
+	private Float weight;
 	
-	private Node left = null;
-	private Node right = null;
+	private Node left;
+	private Node right;
+	
+	public Node(){
+		this.left = null;
+		this.letter = new String("");
+		this.right = null;
+		this.weight = 0.0f;
+		
+	}
 	
 	public Node(String letters, Float weight){
-		this.letter = letters;
+		this.letter = new String(letters);
 		this.weight = weight;
+		this.left = null;
+		this.right = null;
 		
 	}
 	
 	public Node(Node left, Node right){
 		this.left = left;
 		this.right = right;
+		this.letter = "";
+		this.weight = 0.0f;
+	}
+	
+	public Node(Node left, String letter, Node right, Float weight){
+		this.left = left;
+		this.letter = letter;
+		this.right = right;
+		this.weight = weight;
 	}
 	
 	public String getLetter(){
@@ -44,6 +63,12 @@ public class Node {
 	
 	public Node getRight(){
 		return this.right;
+	}
+	
+	
+	@Override
+	public Object clone(){
+		return new Node(this.left, this.letter, this.right, this.weight);
 	}
 
 }

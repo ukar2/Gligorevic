@@ -1,10 +1,10 @@
 package model;
 
 public class BinTree {
-	private Node root = null;
+	private Node root;
 	
 	public BinTree(){
-		
+		this.root = null;
 	}
 	
 	public BinTree(Node node){
