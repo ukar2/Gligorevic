@@ -2,8 +2,8 @@ package main;
 
 import gui.*;
 import controls.*;
+import model.*;
 
-import java.util.*;
 
 public class MainClass {
 
@@ -12,8 +12,11 @@ public class MainClass {
 		//mwf.setVisible(true);
 		
 		Huffmann hfmn = new Huffmann();
+		BinTree tree;
+		Iterator it = new Iterator();
 		try{
-		hfmn.dieFunktion("Tecehetyrenadesjatnitca");
+		tree = hfmn.getHuffmannTree("Tecehetyrenadesjatnitca");
+		it.findLetter(tree, "c");
 		}catch(IndexOutOfBoundsException e){
 			System.out.println(e.getMessage());
 		}

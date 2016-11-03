@@ -23,14 +23,14 @@ public class Node {
 		
 	}
 	
-	public Node(Node left, Node right){
-		this.left = left;
-		this.right = right;
-		this.letter = "";
-		this.weight = 0.0f;
-	}
+//	public Node(Node left, Node right){
+//		this.left = left;
+//		this.right = right;
+//		this.letter = "";
+//		this.weight = 0.0f;
+//	}
 	
-	public Node(Node left, String letter, Node right, Float weight){
+	public Node(Node left, String letter, Float weight, Node right){
 		this.left = left;
 		this.letter = letter;
 		this.right = right;
@@ -68,7 +68,7 @@ public class Node {
 	
 	@Override
 	public Object clone(){
-		return new Node(this.left, this.letter, this.right, this.weight);
+		return new Node(this.left, this.letter, this.weight, this.right);
 	}
 
 }

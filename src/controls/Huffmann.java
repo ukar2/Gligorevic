@@ -12,11 +12,11 @@ public class Huffmann {
 	 * Daten in die Liste
 	 * 
 	 * */
-	private List<Node> getBilletsForTree(String user_input) {
+	private List<BinTree> getBilletsForTree(String user_input) {
 		Character letter = null;
 		String letters = new String("");
 		char[] ch_user_input = user_input.toCharArray();
-		List<Node> billets = new ArrayList<Node>();
+		List<BinTree> billets = new ArrayList<BinTree>();
 
 		size = (float) ch_user_input.length;
 
@@ -24,9 +24,8 @@ public class Huffmann {
 			letter = ch_user_input[j];
 			letters = letter.toString();
 
-			if (!suche_letter_in_Liste_und_erhohe_gewicht_wenn_gefunden(billets,
-					letters, billets.size())) {
-				billets.add(new Node(letters, 1.0f));
+			if (!suche_letter_in_Liste_und_erhohe_gewicht_wenn_gefunden(billets, letters, billets.size())) {
+				billets.add(new BinTree(new BinTree(), letters, 1.0f, new BinTree()));
 			}
 
 		}
@@ -35,11 +34,11 @@ public class Huffmann {
 
 	}
 
-	private boolean suche_letter_in_Liste_und_erhohe_gewicht_wenn_gefunden(List<Node> billets,
+	private boolean suche_letter_in_Liste_und_erhohe_gewicht_wenn_gefunden(List<BinTree> billets,
 			String letters, int billet_size) {
 		for (int i = 0; i < billet_size; i++) {
-			if (billets.get(i).getLetter().equals(letters)) {
-				billets.get(i).countWeight();
+			if (billets.get(i).getRootLetter().equals(letters)) {
+				billets.get(i).countRootWeight();
 				return true;
 			}
 		}
@@ -48,33 +47,33 @@ public class Huffmann {
 
 	}
 
-	private void calculate_statistics(int billet_size, List<Node> billets) {
+	private void calculate_statistics(int billet_size, List<BinTree> billets) {
 		Float weight = 1.0f;
 
 		for (int i = 0; i < billet_size; i++) {
-			weight = billets.get(i).getWeight() / size;
-			billets.get(i).setWeight(weight);
+			weight = billets.get(i).getRootWeight() / size;
+			billets.get(i).setRootWeight(weight);
 
 		}
 
 	}
 	
 	
-	private List<Node> getSortedBillets(List<Node> unsorted_billets, int size){
-		List<Node> sorted_billets = new ArrayList<Node>();
-		
-		for(Node node : unsorted_billets){
-			sorted_billets.add((Node)node.clone());
-		}
+	private List<BinTree> getSortedBillets(List<BinTree> unsorted_billets, int size){
+		List<BinTree> sorted_billets = new ArrayList<BinTree>();
 		
 		for(int i = 0; i < size; i++){
 			for(int j = 0; j < (size - 1); j++){
-				if(sorted_billets.get(j).getWeight() > sorted_billets.get(j+1).getWeight()){
-					Node node = sorted_billets.remove(j);
-					sorted_billets.add(j + 1, node);
+				if(unsorted_billets.get(j).getRootWeight() > unsorted_billets.get(j+1).getRootWeight()){
+					BinTree temp = unsorted_billets.remove(j);
+					unsorted_billets.add(j + 1, temp);
 					
 				}
 			}
+		}
+		
+		while(!unsorted_billets.isEmpty()){
+			sorted_billets.add(unsorted_billets.remove(0));
 		}
 		
 		return sorted_billets;
@@ -82,24 +81,19 @@ public class Huffmann {
 	}
 	
 	
-	List<Node> getStepToTree(List<Node> sorted_billets){
+	List<BinTree> getStepToTree(List<BinTree> sorted_billets){
 		
-		Node n1 = null;
-		Node n2 = null;
-		Node wurzel = null;
-		List<Node> unsorted_billets = new ArrayList<Node>();
+		BinTree t1 = sorted_billets.remove(0);
+		BinTree t2 = sorted_billets.remove(0);
+		BinTree tree = new BinTree(t1, t1.getRootLetter() + t2.getRootLetter(),
+				t1.getRootWeight() + t2.getRootWeight(), t2);
+		List<BinTree> unsorted_billets = new ArrayList<BinTree>();
 		
-		n1 = sorted_billets.remove(0);
-		n2 = sorted_billets.remove(0);
 		
-		wurzel = new Node(n1, n2);
-		wurzel.setLetter(n1.getLetter() + n2.getLetter());
-		wurzel.setWeight(n1.getWeight() + n2.getWeight());
+		sorted_billets.add(tree);
 		
-		sorted_billets.add(wurzel);
-		
-		for(Node node : sorted_billets){
-			unsorted_billets.add((Node)node.clone());
+		while(!sorted_billets.isEmpty()){
+			unsorted_billets.add(sorted_billets.remove(0));
 		}
 		
 		
@@ -107,11 +101,11 @@ public class Huffmann {
 	}
 	
 
-	public void dieFunktion(String input) throws IndexOutOfBoundsException{
-		Node n = null;
+	public BinTree getHuffmannTree(String input) throws IndexOutOfBoundsException{
+		
 		BinTree tree = null;
-		List<Node> unsorted_billets = null;
-		List<Node> sorted_billets = null;
+		List<BinTree> unsorted_billets = null;
+		List<BinTree> sorted_billets = null;
 		
 		
 		unsorted_billets = getBilletsForTree(input);
@@ -119,23 +113,16 @@ public class Huffmann {
 		sorted_billets = getSortedBillets(unsorted_billets, unsorted_billets.size());
 		
 		while(sorted_billets.size() > 1){
-			unsorted_billets.clear();
+			// unsorted_billets.clear();
 			unsorted_billets = getStepToTree(sorted_billets);
 			
-			sorted_billets.clear();
+			// sorted_billets.clear();
 			sorted_billets = getSortedBillets(unsorted_billets, unsorted_billets.size());
 		}
 		
-		tree = new BinTree(sorted_billets.get(0));
+		tree = new BinTree(sorted_billets.remove(0));
 		
-		System.out.println("sorted");
-		for (int i = 0; i < sorted_billets.size(); i++) {
-			n = sorted_billets.get(i);
-			System.out.println(n.getLetter() + " = " + n.getWeight());
-
-		}
-
-		System.out.println(sorted_billets.size());
+		return tree;
 
 	}
 
