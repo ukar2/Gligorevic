@@ -70,5 +70,6 @@ public class Node {
 	public Object clone(){
 		return new Node(this.left, this.letter, this.weight, this.right);
 	}
+		
 
 }

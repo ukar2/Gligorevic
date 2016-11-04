@@ -1,15 +1,20 @@
-package controls;
+package model;
 
 import java.util.*;
-import model.*;
 
-public class Huffmann {
+
+public class HuffmanTree {
 	private Float size = 0.0f;
-	//List<Node> billets = new ArrayList<Node>();
+	private BinTree tree = null;
+	
+	
+	public HuffmanTree(String input){
+		initializeHuffmanTree(input);
+	}
 
-	/**
-	 * zerlegt den Text in Buchstaben, zaehlt deren Haufigket und fügt diese
-	 * Daten in die Liste
+	/*
+	 *  Den Text in Buchstaben zerlegen, deren Haufigket zaehlen 
+	 *  und diese Daten (Buchstabe + Gewicht) in Liste einfuegen.
 	 * 
 	 * */
 	private List<BinTree> getBilletsForTree(String user_input) {
@@ -24,7 +29,7 @@ public class Huffmann {
 			letter = ch_user_input[j];
 			letters = letter.toString();
 
-			if (!suche_letter_in_Liste_und_erhohe_gewicht_wenn_gefunden(billets, letters, billets.size())) {
+			if (!increaseWeightOfMultipleOccur(billets, letters, billets.size())) {
 				billets.add(new BinTree(new BinTree(), letters, 1.0f, new BinTree()));
 			}
 
@@ -34,7 +39,10 @@ public class Huffmann {
 
 	}
 
-	private boolean suche_letter_in_Liste_und_erhohe_gewicht_wenn_gefunden(List<BinTree> billets,
+	/*
+	 *  Das Gewicht von mehrfach vorkommende Buchstaben erhöhen
+	 */
+	private boolean increaseWeightOfMultipleOccur(List<BinTree> billets,
 			String letters, int billet_size) {
 		for (int i = 0; i < billet_size; i++) {
 			if (billets.get(i).getRootLetter().equals(letters)) {
@@ -47,6 +55,9 @@ public class Huffmann {
 
 	}
 
+	/*
+	 *  Gewicht in Statistic umrechnen.
+	 */
 	private void calculate_statistics(int billet_size, List<BinTree> billets) {
 		Float weight = 1.0f;
 
@@ -58,7 +69,9 @@ public class Huffmann {
 
 	}
 	
-	
+	/*
+	 * Buchstaben in der Liste nach ihren Gewicht (Statistic) sortieren
+	 */
 	private List<BinTree> getSortedBillets(List<BinTree> unsorted_billets, int size){
 		List<BinTree> sorted_billets = new ArrayList<BinTree>();
 		
@@ -81,7 +94,7 @@ public class Huffmann {
 	}
 	
 	
-	List<BinTree> getStepToTree(List<BinTree> sorted_billets){
+	private List<BinTree> getStepToTree(List<BinTree> sorted_billets){
 		
 		BinTree t1 = sorted_billets.remove(0);
 		BinTree t2 = sorted_billets.remove(0);
@@ -101,9 +114,7 @@ public class Huffmann {
 	}
 	
 
-	public BinTree getHuffmannTree(String input) throws IndexOutOfBoundsException{
-		
-		BinTree tree = null;
+	private void initializeHuffmanTree(String input) throws IndexOutOfBoundsException{
 		List<BinTree> unsorted_billets = null;
 		List<BinTree> sorted_billets = null;
 		
@@ -113,17 +124,20 @@ public class Huffmann {
 		sorted_billets = getSortedBillets(unsorted_billets, unsorted_billets.size());
 		
 		while(sorted_billets.size() > 1){
-			// unsorted_billets.clear();
 			unsorted_billets = getStepToTree(sorted_billets);
-			
-			// sorted_billets.clear();
 			sorted_billets = getSortedBillets(unsorted_billets, unsorted_billets.size());
 		}
 		
-		tree = new BinTree(sorted_billets.remove(0));
-		
-		return tree;
+		this.tree = new BinTree(sorted_billets.remove(0));
 
+	}
+	
+	
+	public BinTree getHuffmanTree(){
+		if(tree != null)
+			return this.tree;
+		else
+			return null;
 	}
 
 }
