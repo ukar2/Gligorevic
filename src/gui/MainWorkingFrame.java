@@ -5,9 +5,18 @@ import java.awt.event.*;
 
 import javax.swing.*;
 
+import controls.Orb;
+
+/*
+ * TODO:
+ * 1. event hadler for menu such
+ * 2. wenn delete gedrueckt wird, gucken wie mann BinTree loscht
+ */
 public class MainWorkingFrame extends JFrame {
 
 	private static final long serialVersionUID = 1L;
+	
+	Orb control = null;
 	
 	JButton btn_enter = null;
 	JButton btn_komprim = null;
@@ -35,9 +44,9 @@ public class MainWorkingFrame extends JFrame {
 	
 	SettingBar main_menu_bar = null;
 
-	public MainWorkingFrame() {
+	public MainWorkingFrame(Orb control) {
 		createFrame();
-		initializeComponents();
+		initializeComponents(control);
 		prepareComponents();
 		prepareFrame();
 		this.setJMenuBar(main_menu_bar);
@@ -53,8 +62,9 @@ public class MainWorkingFrame extends JFrame {
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
 
-	void initializeComponents() {
-		this.main_menu_bar = new SettingBar();
+	void initializeComponents(Orb control) {
+		this.control = control;
+		this.main_menu_bar = new SettingBar(this.control);
 		
 		// Bedienelemente
 		lbl_info_up = new JLabel();
@@ -63,6 +73,7 @@ public class MainWorkingFrame extends JFrame {
 		txt_area_output = new JTextArea(20, 20);
 		btn_enter = new JButton();
 		btn_komprim = new JButton();
+		btn_komprim.setEnabled(false);
 		btn_delete = new JButton();
 
 		panel_for_input = new JPanel();
@@ -99,9 +110,17 @@ public class MainWorkingFrame extends JFrame {
 		this.btn_enter.setFont(new Font("Arial", 0, 12));
 		this.btn_komprim.setFont(new Font("Arial", 0, 12));
 		
+		this.txt_area_input.setLineWrap(true);
+		this.txt_area_output.setLineWrap(true);
+		
+		
 		this.btn_delete.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e){
 				System.out.println("Button delete");
+				txt_area_input.setText("");
+				txt_area_output.setText("");
+				btn_komprim.setEnabled(false);
+				// nado podumat' kak ochistit' derewo
 			}
 		});
 		
@@ -109,6 +128,17 @@ public class MainWorkingFrame extends JFrame {
 		this.btn_enter.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e){
 				System.out.println("Button Eingabe");
+				String input = txt_area_input.getText();
+				if(!input.isEmpty()){
+					control.takeInputToControl(input);
+					txt_area_output.setText("");
+					txt_area_output.setText(control.getASCIIText());
+					btn_komprim.setEnabled(true);
+				}else{
+					
+				}
+				
+				System.out.println("Eingabe: " + input);
 			}
 		});
 		
@@ -116,6 +146,9 @@ public class MainWorkingFrame extends JFrame {
 		this.btn_komprim.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e){
 				System.out.println("Button Komprimieren");
+				txt_area_output.setText("");
+				txt_area_output.setText(control.getHuffmanCode());
+				
 			}
 		});
 	}

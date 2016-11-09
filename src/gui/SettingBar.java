@@ -1,5 +1,7 @@
 package gui;
 
+import controls.*;
+
 import java.awt.event.*;
 
 import javax.swing.*;
@@ -8,12 +10,13 @@ import javax.swing.*;
 public class SettingBar extends JMenuBar{
 
 	private static final long serialVersionUID = 1L;
+	Orb control = null;
 	
 	MenuSetting menu_einstellungen = null;
 	MenuSetting komprim_method_menu = null;
 	MenuSetting zusatzinfo_menu = null;
 	
-	RadionButtonforMenu huffmann = null;
+	RadionButtonforMenu huffman = null;
 	RadionButtonforMenu hoffmann = null;
 	RadionButtonforMenu buffmann = null;
 	
@@ -23,22 +26,23 @@ public class SettingBar extends JMenuBar{
 	ButtonGroup group1 = null;
 	ButtonGroup group2 = null;
 	
-	public SettingBar(){
+	public SettingBar(Orb control){
 		super();
+		this.control = control;
+		createComponents();
 		initializeComponents();
-		prepareComponents();
-		create_menu();
+		prepareMenu();
 		this.add(menu_einstellungen);
 	}
 	
 	
-	void initializeComponents(){
+	void createComponents(){
 		menu_einstellungen = new MenuSetting("Einstellungen");
 		
 		komprim_method_menu = new MenuSetting("Komprimierungsmethode");
 		zusatzinfo_menu = new MenuSetting("Zustzinformation");
 		
-		huffmann = new RadionButtonforMenu("Huffmann", true);
+		huffman = new RadionButtonforMenu("Huffman", true);
 		hoffmann = new RadionButtonforMenu("Hoffmann", false);
 		buffmann = new RadionButtonforMenu("Buffmann", false);
 		
@@ -50,24 +54,32 @@ public class SettingBar extends JMenuBar{
 		
 	}
 	
-	void prepareComponents(){
-		this.huffmann.addActionListener(new ActionListener() {
+	void initializeComponents(){
+		this.hoffmann.setName("Hoffmann");
+		this.huffman.setName("Huffman");
+		this.buffmann.setName("Buffmann");
+		
+		
+		this.huffman.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e){
-				System.out.println("Huffmann gewaehlt");
+				control.setMenuItemActionEvent(e);
 			}
 		});
 		
 		
 		this.hoffmann.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e){
-				System.out.println("Hoffffmannn");
+				control.setMenuItemActionEvent(e);
 			}
 		});
 		
 		
 		this.buffmann.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e){
-				System.out.println("Bufmann");
+				control.setMenuItemActionEvent(e);
 			}
 		});
 		
@@ -86,8 +98,8 @@ public class SettingBar extends JMenuBar{
 		});
 	}
 	
-	void create_menu(){
-		group1.add(huffmann);
+	void prepareMenu(){
+		group1.add(huffman);
 		group1.add(hoffmann);
 		group1.add(buffmann);
 		group2.add(ein);
@@ -95,7 +107,7 @@ public class SettingBar extends JMenuBar{
 		
 		this.zusatzinfo_menu.add(ein);
 		this.zusatzinfo_menu.add(aus);
-		this.komprim_method_menu.add(huffmann);
+		this.komprim_method_menu.add(huffman);
 		this.komprim_method_menu.add(hoffmann);
 		this.komprim_method_menu.add(buffmann);
 		this.menu_einstellungen.add(komprim_method_menu);
