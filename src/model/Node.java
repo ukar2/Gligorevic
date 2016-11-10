@@ -23,12 +23,12 @@ public class Node {
 		
 	}
 	
-//	public Node(Node left, Node right){
-//		this.left = left;
-//		this.right = right;
-//		this.letter = "";
-//		this.weight = 0.0f;
-//	}
+	public Node(Node left, Node right){
+		this.left = left;
+		this.right = right;
+		this.letter = "";
+		this.weight = 0.0f;
+	}
 	
 	public Node(Node left, String letter, Float weight, Node right){
 		this.left = left;

@@ -4,6 +4,7 @@ import java.util.*;
 
 
 public class HuffmanTree {
+	
 	private Float size = 0.0f;
 	private BinTree tree = null;
 	
@@ -42,8 +43,7 @@ public class HuffmanTree {
 	/*
 	 *  Das Gewicht von mehrfach vorkommende Buchstaben erhöhen
 	 */
-	private boolean increaseWeightOfMultipleOccur(List<BinTree> billets,
-			String letters, int billet_size) {
+	private boolean increaseWeightOfMultipleOccur(List<BinTree> billets, String letters, int billet_size) {
 		for (int i = 0; i < billet_size; i++) {
 			if (billets.get(i).getRootLetter().equals(letters)) {
 				billets.get(i).countRootWeight();

@@ -17,8 +17,8 @@ public class SettingBar extends JMenuBar{
 	MenuSetting zusatzinfo_menu = null;
 	
 	RadionButtonforMenu huffman = null;
-	RadionButtonforMenu hoffmann = null;
-	RadionButtonforMenu buffmann = null;
+	RadionButtonforMenu shannon = null;
+	RadionButtonforMenu fano = null;
 	
 	RadionButtonforMenu ein = null;
 	RadionButtonforMenu aus = null;
@@ -43,8 +43,8 @@ public class SettingBar extends JMenuBar{
 		zusatzinfo_menu = new MenuSetting("Zustzinformation");
 		
 		huffman = new RadionButtonforMenu("Huffman", true);
-		hoffmann = new RadionButtonforMenu("Hoffmann", false);
-		buffmann = new RadionButtonforMenu("Buffmann", false);
+		shannon = new RadionButtonforMenu("Shannon", false);
+		fano = new RadionButtonforMenu("Fano", false);
 		
 		ein = new RadionButtonforMenu("Ein", false);
 		aus = new RadionButtonforMenu("Aus", true);
@@ -55,9 +55,9 @@ public class SettingBar extends JMenuBar{
 	}
 	
 	void initializeComponents(){
-		this.hoffmann.setName("Hoffmann");
+		this.shannon.setName("Shannon");
 		this.huffman.setName("Huffman");
-		this.buffmann.setName("Buffmann");
+		this.fano.setName("Fano");
 		
 		
 		this.huffman.addActionListener(new ActionListener() {
@@ -68,7 +68,7 @@ public class SettingBar extends JMenuBar{
 		});
 		
 		
-		this.hoffmann.addActionListener(new ActionListener() {
+		this.shannon.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e){
 				control.setMenuItemActionEvent(e);
@@ -76,7 +76,7 @@ public class SettingBar extends JMenuBar{
 		});
 		
 		
-		this.buffmann.addActionListener(new ActionListener() {
+		this.fano.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e){
 				control.setMenuItemActionEvent(e);
@@ -100,16 +100,16 @@ public class SettingBar extends JMenuBar{
 	
 	void prepareMenu(){
 		group1.add(huffman);
-		group1.add(hoffmann);
-		group1.add(buffmann);
+		group1.add(shannon);
+		group1.add(fano);
 		group2.add(ein);
 		group2.add(aus);
 		
 		this.zusatzinfo_menu.add(ein);
 		this.zusatzinfo_menu.add(aus);
 		this.komprim_method_menu.add(huffman);
-		this.komprim_method_menu.add(hoffmann);
-		this.komprim_method_menu.add(buffmann);
+		this.komprim_method_menu.add(shannon);
+		this.komprim_method_menu.add(fano);
 		this.menu_einstellungen.add(komprim_method_menu);
 		this.menu_einstellungen.add(zusatzinfo_menu);
 		
